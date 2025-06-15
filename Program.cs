@@ -9,38 +9,44 @@ class Program
     static void Main()
     {
         Console.OutputEncoding = Encoding.UTF8;
-        Console.Write("Выберите задание (1-6): ");
-        int choice = int.Parse(Console.ReadLine());
-        if (int.TryParse(Console.ReadLine(), out choice))
+
+        while (true)
         {
-            switch (choice)
+            Console.Write("Введите номер задания (0 для выхода): ");
+            string choiceInput = Console.ReadLine();
+
+            if (int.TryParse(choiceInput, out int choice))
             {
-                case 1:
-                    Task1();
-                    break;
-                case 2:
-                    Task2();
-                    break;
-                case 3:
-                    Task3();
-                    break;
-                case 4:
-                    Task4();
-                    break;
-                case 5:
-                    Task5();
-                    break;
-                case 6:
-                    Task6();
-                    break;
-                default:
-                    Console.WriteLine("Неверный выбор. Нажмите любую клавишу для продолжения...");
-                    Console.ReadKey();
-                    break;
+                Console.Clear();
+                switch (choice)
+                {
+                    case 1:
+                        Task1();
+                        break;
+                    case 2:
+                        Task2();
+                        break;
+                    case 3:
+                        Task3();
+                        break;
+                    case 4:
+                        Task4();
+                        break;
+                    case 5:
+                        Task5();
+                        break;
+                    case 6:
+                        Task6();
+                        break;
+                    case 0:
+                        Console.WriteLine("Завершение программы.");
+                        return;
+                    default:
+                        Console.WriteLine("Неверный номер задания. Пожалуйста, выберите номер из меню.");
+                        break;
+                }
             }
         }
-
-        Console.WriteLine("Файл перезаписан согласно условиям задачи 6.");
     }
     static void Task1()
     {
