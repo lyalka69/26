@@ -87,20 +87,56 @@ class Program
     }
     static void Task3()
     {
-        string file1 = "matrices1.txt", file2 = "matrices2.txt", file3 = "matrices3.txt";
+        string file1 = "matrices1.txt";
+        string file2 = "matrices2.txt";
+        string file3 = "matrices3.txt";
+
+        // Если файлов нет — создаём с тестовыми матрицами
+        if (!File.Exists(file1))
+        {
+            string[] test1 =
+            {
+            "1 2 3",
+            "4 5 6",
+            "7 8 9",
+            "10 11 12",
+            "13 14 15",
+            "16 17 18"
+        };
+            File.WriteAllLines(file1, test1);
+        }
+
+        if (!File.Exists(file2))
+        {
+            string[] test2 =
+            {
+            "91 92 93",
+            "94 95 96",
+            "97 98 99",
+            "20 21 22",
+            "23 24 25",
+            "26 27 28"
+        };
+            File.WriteAllLines(file2, test2);
+        }
 
         List<string> m1 = new List<string>(File.ReadAllLines(file1));
         List<string> m2 = new List<string>(File.ReadAllLines(file2));
 
-        int k = m1.Count / 3; // матриц в первом файле
-        int l = m2.Count / 3; // во втором
+        int k = m1.Count / 3;
+        int l = m2.Count / 3;
         int count = Math.Min(k, l);
+
+        Console.WriteLine("Изначальное содержимое matrices1.txt:");
+        Console.WriteLine(File.ReadAllText(file1));
+        Console.WriteLine("Изначальное содержимое matrices2.txt:");
+        Console.WriteLine(File.ReadAllText(file2));
+        Console.WriteLine();
 
         for (int i = 0; i < count; i++)
         {
             if ((i + 1) % 2 == 0 && i < k && i < l)
             {
-                // swap m1[i] <-> m2[i]
                 for (int j = 0; j < 3; j++)
                 {
                     string temp = m1[i * 3 + j];
