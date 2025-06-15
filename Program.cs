@@ -51,12 +51,17 @@ class Program
     static void Task1()
     {
         string[] data =
-        {
-            "Иванов;Алексей;Петрович;123456, Россия, Москва, ул. Мира, 10, 1;1980-05-12",
-            "Петров;Иван;Сергеевич;654321, Россия, Тверь, ул. Победы, 7, 2;1975-11-23",
-            "Сидоров;Николай;Андреевич;987654, Россия, СПб, Невский, 15, 8;1988-03-30"
-        };
+     {
+        "Иванов;Алексей;Петрович;123456, Россия, Москва, ул. Мира, 10, 1;1980-05-12",
+        "Петров;Иван;Сергеевич;654321, Россия, Тверь, ул. Победы, 7, 2;1975-11-23",
+        "Сидоров;Николай;Андреевич;987654, Россия, СПб, Невский, 15, 8;1988-03-30"
+    };
         File.WriteAllLines("bodyguards.txt", data);
+
+        // 👉 Вывод содержимого ДО обработки
+        Console.WriteLine("Содержимое файла bodyguards.txt:");
+        Console.WriteLine(File.ReadAllText("bodyguards.txt"));
+        Console.WriteLine();
 
         string[] lines = File.ReadAllLines("bodyguards.txt");
         DateTime oldestDate = DateTime.MaxValue;
@@ -72,6 +77,7 @@ class Program
                 oldest = line;
             }
         }
+
         File.WriteAllText("oldest_guard.txt", oldest);
         Console.WriteLine("Старший телохранитель:");
         Console.WriteLine(oldest);
@@ -79,9 +85,16 @@ class Program
     static void Task2()
     {
         File.WriteAllText("numbers.txt", "1 2 3 4 5 6 7 8 9 10 11");
+
+        // 👉 Вывод содержимого ДО обработки
+        Console.WriteLine("Содержимое файла numbers.txt:");
+        Console.WriteLine(File.ReadAllText("numbers.txt"));
+        Console.WriteLine();
+
         string content = File.ReadAllText("numbers.txt");
         var numbers = content.Split(' ').Select(int.Parse);
         int count = numbers.Count(x => x % 2 == 1 && Math.Sqrt(x) % 1 == 0);
+
         File.WriteAllText("odd_squares_count.txt", $"Количество квадратов нечётных чисел: {count}");
         Console.WriteLine($"Количество квадратов нечётных чисел: {count}");
     }
@@ -171,6 +184,20 @@ class Program
             writer.Write(699.99);
         }
 
+        Console.WriteLine("Содержимое books.dat (все книги):");
+        using (BinaryReader reader = new BinaryReader(File.Open("books.dat", FileMode.Open)))
+        {
+            while (reader.BaseStream.Position < reader.BaseStream.Length)
+            {
+                string author = reader.ReadString();
+                string title = reader.ReadString();
+                int copies = reader.ReadInt32();
+                double price = reader.ReadDouble();
+
+                Console.WriteLine($"Автор: {author}, Название: {title}, Тираж: {copies}, Цена: {price}");
+            }
+        }
+
         using (BinaryReader reader = new BinaryReader(File.Open("books.dat", FileMode.Open)))
         {
             int count = 0;
@@ -234,15 +261,31 @@ class Program
             writer.Write(6.7);
         }
 
+        // 👉 Считываем и показываем содержимое ДО изменений
+        Console.WriteLine("Исходные записи из structs.dat:");
+        using (BinaryReader reader = new BinaryReader(File.Open("structs.dat", FileMode.Open)))
+        {
+            while (reader.BaseStream.Position < reader.BaseStream.Length)
+            {
+                string str = reader.ReadString();
+                int i = reader.ReadInt32();
+                double d = reader.ReadDouble();
+
+                Console.WriteLine($"Строка: \"{str}\", Целое: {i}, Вещественное: {d}");
+            }
+        }
+
+        // 👉 Модифицируем и сохраняем заново
         List<(string, int, double)> records = new List<(string, int, double)>();
         using (BinaryReader reader = new BinaryReader(File.Open("structs.dat", FileMode.Open)))
         {
             while (reader.BaseStream.Position < reader.BaseStream.Length)
             {
                 string str = reader.ReadString();
-                reader.ReadInt32();
-                reader.ReadDouble();
-                records.Add((str, str.Length, (double)str.Length));
+                reader.ReadInt32(); // старое целое
+                reader.ReadDouble(); // старое вещественное
+                int len = str.Length;
+                records.Add((str, len, (double)len));
             }
         }
 
@@ -255,5 +298,20 @@ class Program
                 writer.Write(record.Item3);
             }
         }
+
+        // 👉 Показываем изменённые записи
+        Console.WriteLine("\nОбновлённые записи:");
+        using (BinaryReader reader = new BinaryReader(File.Open("structs.dat", FileMode.Open)))
+        {
+            while (reader.BaseStream.Position < reader.BaseStream.Length)
+            {
+                string str = reader.ReadString();
+                int i = reader.ReadInt32();
+                double d = reader.ReadDouble();
+                Console.WriteLine($"Строка: \"{str}\", Новое целое: {i}, Новое вещественное: {d}");
+            }
+        }
+
+        Console.WriteLine("\nФайл structs.dat успешно перезаписан.");
     }
 }
