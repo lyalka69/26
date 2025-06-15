@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -9,33 +9,38 @@ class Program
     static void Main()
     {
         Console.OutputEncoding = Encoding.UTF8;
-        Console.WriteLine("Выберите задание (1-6):");
+        Console.Write("Выберите задание (1-6): ");
         int choice = int.Parse(Console.ReadLine());
-
-        switch (choice)
+        if (int.TryParse(Console.ReadLine(), out choice))
         {
-            case 1:
-                Task1();
-                break;
-            case 2:
-                Task2();
-                break;
-            case 3:
-                Task3();
-                break;
-            case 4:
-                Task4();
-                break;
-            case 5:
-                Task5();
-                break;
-            case 6:
-                Task6();
-                break;
-            default:
-                Console.WriteLine("Неверный выбор.");
-                break;
+            switch (choice)
+            {
+                case 1:
+                    Task1();
+                    break;
+                case 2:
+                    Task2();
+                    break;
+                case 3:
+                    Task3();
+                    break;
+                case 4:
+                    Task4();
+                    break;
+                case 5:
+                    Task5();
+                    break;
+                case 6:
+                    Task6();
+                    break;
+                default:
+                    Console.WriteLine("Неверный выбор. Нажмите любую клавишу для продолжения...");
+                    Console.ReadKey();
+                    break;
+            }
         }
+
+        Console.WriteLine("Файл перезаписан согласно условиям задачи 6.");
     }
     static void Task1()
     {
@@ -208,6 +213,5 @@ class Program
                 writer.Write(record.Item3);
             }
         }
-        Console.WriteLine("Файл перезаписан согласно условиям задачи 6.");
     }
 }
